@@ -31,7 +31,7 @@ For security, thread safety, string pooling efficiency, and reliable hashing.
 Constructors initialize objects when they are created.
 
 ### 8) Difference between `ArrayList` and `LinkedList`?
-`ArrayList` is better for random access; `LinkedList` is better for frequent insert/delete in the middle (in theory), but often has more memory/cache overhead.
+`ArrayList` is better for random access and is usually preferred in practice. `LinkedList` can be efficient for insert/delete only when you already have an iterator at the position; traversal is still linear and it has higher memory/cache overhead.
 
 ### 9) What is `static` in Java?
 `static` members belong to the class, not to individual objects.
@@ -49,7 +49,7 @@ Constructors initialize objects when they are created.
 A unified architecture of interfaces and classes (`List`, `Set`, `Map`, `Queue`) for storing and manipulating groups of objects.
 
 ### 2) Difference between `HashMap` and `ConcurrentHashMap`?
-`HashMap` is not thread-safe. `ConcurrentHashMap` supports safe concurrent access with high throughput.
+`HashMap` is not thread-safe and allows one `null` key plus `null` values. `ConcurrentHashMap` supports safe concurrent access with high throughput and does not allow `null` keys or values.
 
 ### 3) What is a `HashSet` internally?
 A wrapper around `HashMap` where elements are stored as keys with a dummy value.
@@ -97,12 +97,12 @@ Visibility of writes across threads and ordering constraints; it does not provid
 A relationship ensuring that memory writes by one action are visible to another action.
 
 ### 5) What are common GC collectors in modern Java?
-G1 (default in many versions), ZGC, Shenandoah, and Parallel GC—each balancing latency and throughput differently.
+G1, ZGC, Shenandoah, and Parallel GC are common options in modern Java runtimes; each balances latency and throughput differently.
 
 ### 6) What are streams in Java, and when not to use them?
 Streams provide declarative data processing. Avoid them in extremely performance-critical hot paths or where imperative code is clearer.
 
-### 7) What is the difference between `Optional` good and bad usage?
+### 7) What are good and bad uses of `Optional`?
 Good: return type to model absence clearly. Bad: fields/parameters overuse, serializable DTOs, or performance-sensitive loops.
 
 ### 8) Explain `CompletableFuture`.
@@ -145,7 +145,7 @@ Use low-pause collectors (ZGC/Shenandoah), size heap carefully, reduce allocatio
 ### 9) What are common pitfalls of thread pools?
 Unbounded queues, wrong pool sizing, blocking tasks in CPU pools, missing rejection policies, and context leakage.
 
-### 10) How do you secure Java applications at code level?
+### 10) How do you secure Java applications end-to-end?
 Input validation, output encoding, strong authz/authn, dependency patching, secret management, and least-privilege defaults.
 
 ---
@@ -162,7 +162,7 @@ The JIT determines object scope; non-escaping objects may be stack-allocated or 
 Safepoints are JVM coordination points for GC and VM operations. Excessive safepoints can increase pause time.
 
 ### 4) How would you evaluate virtual threads (Project Loom) adoption?
-Assess blocking model compatibility, thread-local usage, pinning risks, observability tooling, and throughput/latency trade-offs.
+Assess blocking model compatibility, thread-local usage, pinning risks (for example when a virtual thread blocks while holding a monitor or during certain native/foreign calls), observability tooling, and throughput/latency trade-offs when your target runtime supports virtual threads.
 
 ### 5) What is the trade-off between monolith and microservices in Java ecosystems?
 Monolith: simpler operations and consistency. Microservices: independent scaling/deployment but higher distributed-system complexity.
